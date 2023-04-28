@@ -3,12 +3,12 @@ VALUES("Sales"),
 ("Marketing"),
 ("Engineering");
 
-INSERT INTO role(title, salary)
-VALUES("Manager",100),
-("Assistant", 10),
-("Engineer",50);
+INSERT INTO role(title, salary, department_id)
+VALUES("Manager",100,1),
+("Assistant", 10,2),
+("Engineer",50,3);
 
-INSERT INTO employee(first_name,last_name,manager_id)
-VALUES("Sarah","Cambell",1),
-("John","Johnson", 2),
-("Mark","Joy",1);
+INSERT INTO employee(first_name,last_name,role_id,manager_id)
+VALUES("Sarah","Cambell",1,1),
+("John","Johnson", 2,2),
+("Mark","Joy",3,1);
