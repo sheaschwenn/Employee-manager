@@ -32,7 +32,7 @@ inquirer
     {
         type:'list',
         message:'Which department does the role belong to?',
-        choices: dropMenu,
+        choices: dropMenu(),
         name: 'addDepartment',
         when: (choice) => choice.main === "add a role"
     },
