@@ -12,7 +12,7 @@ VALUES("Sales Lead",100,1),
 ("Research Assistant", 30,3);
 
 INSERT INTO employee(first_name,last_name,role_id,manager_id)
-VALUES("Sarah","Cambell",1,NULL),
+VALUES("Sarah","Cambell",1,Null),
 ("John","Johnson", 2,1),
 ("Mark","Joy",3,NULL),
 ("Suzy","Belle",4,3),
