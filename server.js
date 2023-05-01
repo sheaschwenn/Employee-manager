@@ -79,33 +79,108 @@ function addRole() {
             ])
 
             .then((data) => {
-                db.query('INSERT INTO role(title, salary, department_id) VALUES(?)', [data.addTitle, data.addSalary, data.addDepartment], (err, results) => {
-                    console.table(results)
+                db.query('INSERT INTO role(title, salary, department_id) VALUES(?,?,?)', [data.addTitle, data.addSalary, data.addDepartment], (err, results) => {
+                    db.query('SELECT * FROM role',(err,results2)=>{
+                        console.table(results2)
+                    })
                 })
             })
     })
 }
 
-module.exports = { viewDepartments, viewEmployees, viewRoles, addDepartment, addRole };
+function addEmployee() {
+    let roles;
+    db.query('SELECT * FROM role', (err, results) => {
+        roles = results.map((role) => {
+            return {
+                name: role.title,
+                value: role.id
+            }
+        })
+        inquirer
+            .prompt([
+                {
+                    type: 'input',
+                    message: 'First name of the employee you would like to add',
+                    name: 'addFirstName',
+                },
+                {
+                    type: 'input',
+                    message: 'Last name of the employee you would like to add',
+                    name: 'addLastName',
+                },
+                {
+                    type: 'list',
+                    message: 'What is the role of this employee?',
+                    name: 'addERole',
+                    choices:roles
 
-    // if(data.main === "view all employees"){
-    //     db.query('SELECT * FROM employee', function(err,results){
-    //         console.table(results)
-    //     })
-    // }
-    // else if(data.main ==="add a department"){
-    //     db.query('INSERT INTO department(name) VALUES(?)',data.addDepartment, function(err,results){
-    //         db.query(`SELECT * FROM department`, (err,results2)=>{
-    //             console.table(results2)
-    //         })
+                },
+                {
+                    type: 'input',
+                    message: 'Who is this employees manager?',
+                    name: 'addEManager',
+                },
+            ])
 
-    // })
-    // }
-    // else if (data.main === "view all departments"){
-    //     db.query(`SELECT * FROM department`, (err,results) =>{
-    //         console.table(results)
-    //     })
-    // }
-    // else if(data.main ===""){  }
+            .then((data) => {
+                db.query('INSERT INTO employee(first_name,last_name,role_id,manager_id) VALUES(?,?,?,?)', [data.addFirstName, data.addLastName, data.addERole,data.addEManager], (err, results) => {
+                    db.query('SELECT * FROM employee',(err,results2)=>{
+                        console.table(results2)
+                    })
+                    })
+                })
+            })
+    }
+
+function updateEmployee() {
+    let employees;
+    db.query('SELECT * FROM employee', (err, results) => {
+        employees = results.map((employee) => {
+            return {
+                name: [employee.first_name,employee.last_name],
+                value: employee.id
+            }
+        })
+        let roles;
+    db.query('SELECT * FROM role', (err, results) => {
+        roles = results.map((role) => {
+            return {
+                name: role.title,
+                value: role.id
+            }
+        })
+    
+        inquirer
+            .prompt([
+                {
+                    type: 'list',
+                    message: 'Which employee would you like to update?',
+                    name: 'eName',
+                    choices: employees
+                },
+        
+                {
+                    type: 'list',
+                    message: 'Which role would you like to change this employee to?',
+                    name: 'newRole',
+                    choices: roles
+                },
+              
+            ])
+
+            .then((data) => {
+                db.query('Update employee SET role_id =? WHERE id=?', [data.newRole, data.eName], (err, results) => {
+                    db.query('SELECT * FROM employee',(err,results2)=>{
+                        console.table(results2)
+                    })
+                    })
+                })
+            })
+    })
+}
+
+
+module.exports = { viewDepartments, viewEmployees, viewRoles, addDepartment, addRole,addEmployee, updateEmployee };
 
 

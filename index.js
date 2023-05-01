@@ -1,5 +1,5 @@
 const inquirer = require("inquirer");
-const { viewDepartments,viewEmployees,viewRoles,addDepartment,addRole} = require("./server")
+const { viewDepartments,viewEmployees,viewRoles,addDepartment,addRole,addEmployee,updateEmployee} = require("./server")
 
 
 
@@ -30,62 +30,17 @@ inquirer
                 addRole()
             break;
             case 'add an employee':
+                addEmployee()
             break;
             case 'update an employee role':
+                updateEmployee()
             break;
 
         }
     })
-//         {
-//             type: 'input',
-//             message: 'What is the name of the role you would like to add?',
-//             name: 'addTitle',
-//             when: (choice) => choice.main === "add a role"
-//         },
-//         {
-//             type: 'input',
-//             message: 'What is the salary for the role you would like to add?',
-//             name: 'addSalary',
-//             when: (choice) => choice.main === "add a role"
-//         },
-//         {
-//             type: 'list',
-//             message: 'Which department does the role belong to?',
-//             choices: dropMenu(),
-//             name: 'addDepartment',
-//             when: (choice) => choice.main === "add a role"
-//         },
-//         {
-//             type: 'input',
-//             message: 'First name of the employee you would like to add',
-//             name: 'addFirstName',
-//             when: (choice) => choice.main === "add an employee"
-//         },
-//         {
-//             type: 'input',
-//             message: 'Last name of the employee you would like to add',
-//             name: 'addLastName',
-//             when: (choice) => choice.main === "add an employee"
-//         },
-//         {
-//             type: 'input',
-//             message: 'What is the role of this employee?',
-//             name: 'addERole',
-//             when: (choice) => choice.main === "add an employee"
-//         },
-//         {
-//             type: 'input',
-//             message: 'Who is this employees manager?',
-//             name: 'addEManager',
-//             when: (choice) => choice.main === "add an employee"
-//         },
-//         {
-//             type: 'input',
-//             message: 'Which employee would you like to update?',
-//             name: 'addUName',
-//             when: (choice) => choice.main === "update an employee"
-//         },
-
+//         
+      
+      
 // ])
 //     .then((data) => {
 //         mainMenu(data);
