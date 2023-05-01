@@ -18,10 +18,11 @@ inquirer
                 viewDepartments(data)
                 break;
             case 'view all roles':
-                viewEmployees(data)
+                viewRoles(data)
+                
                 break;
             case 'view all employees':
-                viewRoles(data)
+                viewEmployees()
                 break;
             case 'add a department':
                 addDepartment(data)
