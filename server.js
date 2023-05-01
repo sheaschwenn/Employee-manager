@@ -17,12 +17,6 @@ const db = mysql.createConnection(
     console.log("Connected to employee_db")
 );
 
-function dropMenu() {
-
-    db.query('SELECT * FROM department', (err, results) => {
-        return results
-    })
-}
 
 function viewDepartments(data) {
     return new Department(data.main).selectAll()
@@ -54,39 +48,45 @@ function addDepartment() {
         })
 }
 function addRole() {
-    dropMenu()
-    .then((data)=>{
-    inquirer
-    .prompt([
-    {
-        type: 'input',
-        message: 'What is the name of the role you would like to add?',
-        name: 'addTitle',
-    },
-    {
-        type: 'input',
-        message: 'What is the salary for the role you would like to add?',
-        name: 'addSalary',
-        
-    },
-    {
-        type: 'list',
-        message: 'Which department does the role belong to?',
-        choices: data,
-        name: 'addDepartment',
-      
-    }
-])
+    let choices;
+    db.query('SELECT * FROM department', (err, results) => {
+        choices = results.map((choice) => {
+            return {
+                name: choice.name,
+                value: choice.id
+            }
+        })
+        inquirer
+            .prompt([
+                {
+                    type: 'input',
+                    message: 'What is the name of the role you would like to add?',
+                    name: 'addTitle',
+                },
+                {
+                    type: 'input',
+                    message: 'What is the salary for the role you would like to add?',
+                    name: 'addSalary',
 
-.then((data)=>{
-    db.query('INSERT INTO role(title, salary, department_id) VALUES(?)', [data.addTitle, data.addSalary, data.id], (err, results) => {
-        console.table(results)
+                },
+                {
+                    type: 'list',
+                    message: 'Which department does the role belong to?',
+                    choices: choices,
+                    name: 'addDepartment',
+
+                }
+            ])
+
+            .then((data) => {
+                db.query('INSERT INTO role(title, salary, department_id) VALUES(?)', [data.addTitle, data.addSalary, data.addDepartment], (err, results) => {
+                    console.table(results)
+                })
+            })
     })
-})
-})
 }
 
-module.exports = { viewDepartments, viewEmployees, viewRoles, addDepartment, addRole};
+module.exports = { viewDepartments, viewEmployees, viewRoles, addDepartment, addRole };
 
     // if(data.main === "view all employees"){
     //     db.query('SELECT * FROM employee', function(err,results){
