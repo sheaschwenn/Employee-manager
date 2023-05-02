@@ -1,7 +1,7 @@
 const inquirer = require("inquirer");
 const { viewDepartments, viewEmployees, viewRoles, addDepartment, addRole, addEmployee, updateEmployee } = require("./server")
 
-
+// function for all prompts and calling the subsequent functions
 function startMenu(){
 
     inquirer
@@ -13,6 +13,7 @@ function startMenu(){
                 name: 'main'
             }
         ])
+        // switch statement to choose the action take depending on the users choice 
         .then((data) => {
             switch (data.main) {
                 case 'view all departments':
@@ -53,4 +54,5 @@ function startMenu(){
     
 }
 
+// call the function 
 startMenu();

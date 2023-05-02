@@ -5,6 +5,7 @@ const Role = require('./lib/role');
 const inquirer = require("inquirer");
 const mysql = require("mysql2");
 
+// creating connection to database
 const db = mysql.createConnection(
     {
         host: 'localhost',
@@ -16,25 +17,25 @@ const db = mysql.createConnection(
 );
 
 
-
+// creating a new instance of the Department class 
 function viewDepartments(data) {
-    
     return new Department(data.main).selectAll()
     
 }
-
+// querying for employee id, name, role, salary, department and manager, joining employee to role and role to department to create a table with all three tables info 
 function viewEmployees() {
     db.query('SELECT employee.id,employee.first_name, employee.last_name,role.title,department.name AS department, role.salary,CONCAT(manager.first_name," ",manager.last_name) AS manager FROM employee LEFT JOIN role ON employee.role_id = role.id LEFT JOIN department on role.department_id=department.id LEFT JOIN employee manager on manager.id=employee.manager_id', (err, results) => {
         
         return console.table(results)
     })
 }
-
+// creating an instance of Role, just querying for everything in role 
 function viewRoles(data) {
     
     return new Role(data.main).selectAll();
 }
-
+// prompting the user for the department they would like to add
+// then inserting that user input into the department table 
 function addDepartment() {
     inquirer
         .prompt([
@@ -52,6 +53,8 @@ function addDepartment() {
             })
         })
 }
+// selecting all from department and then storing results in an object and using that object in the next prompt to list all departments
+// querying the role table and inserting a new role based on the users input 
 function addRole() {
     let choices;
     db.query('SELECT * FROM department', (err, results) => {
@@ -92,7 +95,9 @@ function addRole() {
             })
     })
 }
-
+// selecting all from role and then storing results in an object and using that object in the next prompt to list all roles
+// selecting emplyees name and id to use in as a list in user prompts 
+// creating an array of objects that are all employees and adding an option of none (that employee has no manager)
 function addEmployee() {
     let roles;
     db.query('SELECT * FROM role', (err, results) => {
@@ -139,7 +144,7 @@ function addEmployee() {
                     choices: managers
                 },
             ])
-
+// using users input to create a new employee and add it to the employee table in the db
             .then((data) => {
                 console.log(data)
                 db.query('INSERT INTO employee(first_name,last_name,role_id,manager_id) VALUES(?,?,?,?)',
@@ -152,7 +157,11 @@ function addEmployee() {
         })
     })
 }
-
+// updating and employee
+// selecting all from table employee and storing employee name and id as an object in an array of employees 
+// using that to then prompt the user to choose an employee to update
+// selecting all from roles and storing role title and id as an object in an array of roles 
+// getting a list of employees an option of no manager 
 function updateEmployee() {
     let employees;
     db.query('SELECT * FROM employee', (err, results) => {
@@ -205,7 +214,8 @@ function updateEmployee() {
                     }
 
                 ])
-
+// using user input to update and employee , quering for an employee id that matches the employee name chosen 
+// setting their role and manager to the user input
                 .then((data) => {
                     db.query('Update employee SET role_id =?, manager_id=? WHERE id=?', [data.newRole, data.newManager,data.eName], (err, results) => {
                         db.query('SELECT * FROM employee', (err, results2) => {
@@ -218,7 +228,7 @@ function updateEmployee() {
     })
 }
 
-
+// exporting all functions needed for the index.js
 module.exports = { viewDepartments, viewEmployees, viewRoles, addDepartment, addRole, addEmployee, updateEmployee };
 
 
