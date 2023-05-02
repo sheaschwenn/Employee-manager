@@ -1,48 +1,56 @@
 const inquirer = require("inquirer");
-const { viewDepartments,viewEmployees,viewRoles,addDepartment,addRole,addEmployee,updateEmployee} = require("./server")
+const { viewDepartments, viewEmployees, viewRoles, addDepartment, addRole, addEmployee, updateEmployee } = require("./server")
 
 
+function startMenu(){
 
-inquirer
-    .prompt([
-        {
-            type: "list",
-            message: 'What would you like to do?',
-            choices: ["view all departments", "view all roles", "view all employees", "add a department", "add a role", "add an employee", "update an employee role"],
-            name: 'main'
-        }
-    ])
-    .then((data) => {
-        switch (data.main) {
-            case 'view all departments':
-                viewDepartments(data)
-                break;
-            case 'view all roles':
-                viewRoles(data)
+    inquirer
+        .prompt([
+            {
+                type: "list",
+                message: 'What would you like to do?',
+                choices: ["view all departments", "view all roles", "view all employees", "add a department", "add a role", "add an employee", "update an employee role", "quit"],
+                name: 'main'
+            }
+        ])
+        .then((data) => {
+            switch (data.main) {
+                case 'view all departments':
+                    viewDepartments(data)
+                    
+                    break;
+                case 'view all roles':
+                    viewRoles(data)
+                   
+
+                    break;
+                case 'view all employees':
+                    viewEmployees()
                 
-                break;
-            case 'view all employees':
-                viewEmployees()
-                break;
-            case 'add a department':
-                addDepartment(data)
-            break;
-            case 'add a role':
-                addRole()
-            break;
-            case 'add an employee':
-                addEmployee()
-            break;
-            case 'update an employee role':
-                updateEmployee()
-            break;
+                    break;
+                case 'add a department':
+                    addDepartment(data)
+                    
+                    break;
+                case 'add a role':
+                    addRole()
+                   
+                    break;
+                case 'add an employee':
+                    addEmployee()
+                    
+                    break;
+                case 'update an employee role':
+                    updateEmployee()
+                   
+                    break;
+                case 'quit':
+                    console.log("Goodbye");
+                    break;
 
-        }
-    })
-//         
-      
-      
-// ])
-//     .then((data) => {
-//         mainMenu(data);
-//     })
+            }
+        })
+    
+}
+
+startMenu();
